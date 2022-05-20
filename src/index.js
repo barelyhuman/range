@@ -7,6 +7,12 @@ function inRange(range, start, end) {
 	return startInRange && endInRange
 }
 
+function isEqual(range, start, end) {
+	const startEqual = range.start.valueOf() === start.valueOf()
+	const endEqual = range.end.valueOf() === end.valueOf()
+	return startEqual && endEqual
+}
+
 const api = {
 	beforeChangeListeners: [],
 	afterChangeListeners: [],
@@ -33,8 +39,16 @@ const api = {
 		}
 
 		const newRanges = []
+		const toRemoveIndexes = []
 
-		this.ranges.forEach(range => {
+		this.ranges.forEach((range, index) => {
+			if (isEqual(range, start, end)) {
+				result.effectedRanges.push(range)
+				result.changed = true
+				toRemoveIndexes.push(index)
+				return
+			}
+
 			if (!inRange(range, start, end)) {
 				return
 			}
@@ -56,7 +70,9 @@ const api = {
 		if (result.changed) {
 			this.beforeChangeListeners.forEach(x => x({ranges: this.ranges.slice()}))
 
-			this.ranges = newRanges
+			this.ranges = newRanges.filter(
+				(_, i) => toRemoveIndexes.indexOf(i) === -1,
+			)
 
 			this.afterChangeListeners.forEach(x =>
 				x({ranges: this.ranges, ...result}),

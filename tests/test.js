@@ -159,4 +159,23 @@ test('empty before listener and after listener', () => {
 	assert.ok(!ranHook)
 })
 
+test('empty range if the whole range is booked', () => {
+	const start = new Date()
+	const end = new Date()
+
+	start.setHours(0, 0, 0, 0)
+	end.setHours(23, 59, 59, 0)
+
+	const range = createRange(start, end)
+	const blockStart = new Date(start)
+	const blockEnd = new Date(start)
+
+	blockStart.setHours(0, 0, 0, 0)
+	blockEnd.setHours(23, 59, 59, 0)
+
+	range.block(blockStart, blockEnd)
+
+	assert.ok(range.ranges.length === 0)
+})
+
 test.run()
