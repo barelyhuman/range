@@ -110,4 +110,53 @@ test('should run beforeChange hook', () => {
 	assert.ok(ranHook)
 })
 
+test('should run afterChange hook', () => {
+	const start = new Date()
+	const end = new Date()
+	let ranHook = false
+
+	start.setHours(0, 0, 0, 0)
+	end.setHours(11, 59, 59, 0)
+	end.setDate(end.getDate() + 1)
+
+	const range = createRange(start, end)
+	const blockStart = new Date(start)
+	const blockEnd = new Date(start)
+
+	blockStart.setHours(10, 0, 0, 0)
+	blockEnd.setHours(18, 0, 0, 0)
+
+	range.afterChange(() => {
+		ranHook = true
+	})
+
+	range.block(blockStart, blockEnd)
+
+	assert.ok(ranHook)
+})
+
+test('empty before listener and after listener', () => {
+	const start = new Date()
+	const end = new Date()
+	let ranHook = false
+
+	start.setHours(0, 0, 0, 0)
+	end.setHours(11, 59, 59, 0)
+	end.setDate(end.getDate() + 1)
+
+	const range = createRange(start, end)
+	const blockStart = new Date(start)
+	const blockEnd = new Date(start)
+
+	blockStart.setHours(10, 0, 0, 0)
+	blockEnd.setHours(18, 0, 0, 0)
+
+	range.beforeChange(null)
+	range.afterChange(false)
+
+	range.block(blockStart, blockEnd)
+
+	assert.ok(!ranHook)
+})
+
 test.run()
