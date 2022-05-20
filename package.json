@@ -33,6 +33,7 @@
 	"prettier": "@barelyhuman/prettier-config",
 	"devDependencies": {
 		"@barelyhuman/prettier-config": "^0.1.0",
+		"bumpp": "^7.1.1",
 		"bundt": "^1.1.5",
 		"esm": "^3.2.25",
 		"prettier": "^2.6.2",
