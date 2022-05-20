@@ -1,6 +1,6 @@
 import {test} from 'uvu'
 import * as assert from 'uvu/assert'
-import {createRange} from '../index.js'
+import {createRange} from '../src/index.js'
 
 test('should create range', () => {
 	const start = new Date()
