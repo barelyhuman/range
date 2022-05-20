@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - '*.md'
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+  pull_request:
+    paths-ignore:
+      - '*.md'
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Node.js v${{ matrix.nodejs }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nodejs: [8, 10, 12]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.nodejs }}
+
+      - name: Install
+        run: |
+          npm install
+          npm install -g nyc
+
+      - name: Test w/ Coverage
+        run: nyc --include=src npm test
