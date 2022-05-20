@@ -1,0 +1,53 @@
+{
+	"name": "@barelyhuman/range",
+	"version": "0.1.0",
+	"keywords": [
+		"range",
+		"in range",
+		"range maps",
+		"range blockers"
+	],
+	"license": "MIT",
+	"author": "Reaper <ahoy@barelyhuman.dev>",
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"main": "dist/index.js",
+	"unpkg": "dist/index.min.js",
+	"module": "dist/index.mjs",
+	"types": "index.d.ts",
+	"files": [
+		"*.d.ts",
+		"dist"
+	],
+	"scripts": {
+		"build": "bundt",
+		"next": "bumpp --commit --tag",
+		"test": "uvu -r esm tests",
+		"fix": "prettier --write"
+	},
+	"prettier": "@barelyhuman/prettier-config",
+	"devDependencies": {
+		"@barelyhuman/prettier-config": "^0.1.0",
+		"bundt": "^1.1.5",
+		"esm": "^3.2.25",
+		"prettier": "^2.6.2",
+		"uvu": "^0.5.3"
+	},
+	"engines": {
+		"node": ">=8"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"terser": {
+		"compress": {
+			"passes": 10
+		}
+	},
+	"umd:name": "range"
+}
