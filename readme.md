@@ -33,27 +33,56 @@ const {createRange} = require('@barelyhuman/range')
 
 ## Example
 
-You can find more such cases in the [`tests`](/tests/) files
+You can find more such examples in the [`tests`](/tests/) files.
+
+The below goes through most of the API
 
 ```js
 import {createRange} from '@barelyhuman/range'
 
+// decide the start and end of the range
 const start = new Date()
 const end = new Date()
 
+// start of day
 start.setHours(0, 0, 0, 0)
-end.setHours(11, 59, 59, 0)
-end.setDate(end.getDate() + 1)
 
+// end of the next day
+end.setDate(end.getDate() + 1)
+end.setHours(23, 59, 59, 0)
+
+// create a range object out of it
 const range = createRange(start, end)
+
+// decide what part of the range to be blocked
 const blockStart = new Date(start)
 const blockEnd = new Date(start)
 
 blockStart.setHours(10, 0, 0, 0)
 blockEnd.setHours(18, 0, 0, 0)
 
-range.block(blockStart, blockEnd)
+range.beforeChange(({available}) => {
+	// triggered before a change is done to the ranges
+	// `available` is the ranges before the change is done
+})
 
+range.afterChange(({available, effectedRanges, changed}) => {
+	// only triggered  **if** a range is changed
+	// `changed` is always true here
+})
+
+// attempt a block on the range
+// should break the original range of today-00:00:00 - tomorrow-23:59:59
+// into 2 parts
+// [today-00:00:00,today-10:00:00] and [today-18:00:00,tomorrow-23:59:59]
+const blocked = range.block(blockStart, blockEnd)
+
+// `blocked.changed` will be true if a range was changed / effected
+assert.ok(blocked.changed)
+// `blocked.effectedRanges` is an array of the ranges that were effected
+assert.equal(blocked.effectedRanges.length, 1)
+
+// you can be verbose and check if the split up ranges are valid.
 assert.equal(range.available[0].start.valueOf(), start.valueOf())
 assert.equal(range.available[0].end.valueOf(), blockStart.valueOf())
 
