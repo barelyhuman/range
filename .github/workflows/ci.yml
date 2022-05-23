@@ -32,5 +32,9 @@ jobs:
           npm install
           npm install -g nyc
 
+      - name: Build
+        run: |
+          npm run build
+
       - name: Test w/ Coverage
         run: nyc --include=src npm test
