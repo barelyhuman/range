@@ -4,7 +4,7 @@ export interface DatePair {
 }
 
 export interface Range {
-	ranges: DatePair[]
+	available: DatePair[]
 	beforeChange: (fn: (params: any) => void) => void
 	afterChange: (fn: (params: any) => void) => void
 	block: (
