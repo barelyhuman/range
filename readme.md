@@ -4,8 +4,12 @@
 
 [![CI](https://github.com/barelyhuman/range/actions/workflows/ci.yml/badge.svg)](https://github.com/barelyhuman/range/actions/workflows/ci.yml)
 
+**NOTE**: Still adding more and more cases and fixes, feel free to raise issues as you find them
+
 When working with date based bookings and orders, it's mostly preferred to have the
 ranges and checks on the DB by using a timeseries database or by simplifying query by setting up good database schemas. Still, sometimes you need the date based checks on the application layer as well and this library was built to help with that.
+
+Also, I wanted to build one.
 
 ## Highlights
 
