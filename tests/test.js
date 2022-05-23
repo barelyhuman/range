@@ -211,4 +211,58 @@ test('empty range if the whole range is booked', () => {
 	assert.ok(range.available.length === 0)
 })
 
+test('should not block when start is greater than both', () => {
+	const start = new Date()
+	const end = new Date()
+
+	start.setHours(0, 0, 0, 0)
+	end.setHours(23, 59, 59, 0)
+
+	const tomorrowEveStart = new Date()
+	tomorrowEveStart.setDate(tomorrowEveStart.getDate() + 1)
+	tomorrowEveStart.setHours(15, 0, 0, 0)
+
+	const tomorrowEveEnd = new Date(tomorrowEveStart)
+	tomorrowEveEnd.setHours(16, 0, 0, 0)
+
+	const range = createRange(start, end)
+	const blockStart = new Date(tomorrowEveStart)
+	const blockEnd = new Date(tomorrowEveEnd)
+
+	blockStart.setHours(0, 0, 0, 0)
+	blockEnd.setHours(23, 59, 59, 0)
+
+	const blocked = range.block(blockStart, blockEnd)
+
+	assert.not.ok(blocked.changes)
+	assert.equal(blocked.effectedRanges.length, 0)
+})
+
+test('should not block when start is less but end is greater than the range', () => {
+	const start = new Date()
+	const end = new Date()
+
+	start.setHours(0, 0, 0, 0)
+	end.setHours(23, 59, 59, 0)
+
+	const todayEveStart = new Date()
+	todayEveStart.setHours(15, 0, 0, 0)
+
+	const tomorrowEveEnd = new Date(todayEveStart)
+	tomorrowEveEnd.setDate(tomorrowEveEnd.getDate() + 1)
+	tomorrowEveEnd.setHours(16, 0, 0, 0)
+
+	const range = createRange(start, end)
+	const blockStart = new Date(todayEveStart)
+	const blockEnd = new Date(tomorrowEveEnd)
+
+	blockStart.setHours(0, 0, 0, 0)
+	blockEnd.setHours(23, 59, 59, 0)
+
+	const blocked = range.block(blockStart, blockEnd)
+
+	assert.not.ok(blocked.changes)
+	assert.equal(blocked.effectedRanges.length, 0)
+})
+
 test.run()
