@@ -14,3 +14,5 @@ export interface Range {
 }
 
 export function createRange(start: Date, end: Date): Range
+
+export function createMultipleRanges(datePairs: DatePair[]): Range[]

@@ -34,14 +34,14 @@ const api = {
 	block(start, end) {
 		const result = {effectedRanges: [], changed: false}
 
-		if (this.ranges.length === 0) {
+		if (this.available.length === 0) {
 			return result
 		}
 
 		const newRanges = []
 		const toRemoveIndexes = []
 
-		this.ranges.forEach((range, index) => {
+		this.available.forEach((range, index) => {
 			if (isEqual(range, start, end)) {
 				result.effectedRanges.push(range)
 				result.changed = true
@@ -68,14 +68,16 @@ const api = {
 		})
 
 		if (result.changed) {
-			this.beforeChangeListeners.forEach(x => x({ranges: this.ranges.slice()}))
+			this.beforeChangeListeners.forEach(x =>
+				x({available: this.available.slice()}),
+			)
 
-			this.ranges = newRanges.filter(
+			this.available = newRanges.filter(
 				(_, i) => toRemoveIndexes.indexOf(i) === -1,
 			)
 
 			this.afterChangeListeners.forEach(x =>
-				x({ranges: this.ranges, ...result}),
+				x({available: this.available, ...result}),
 			)
 		}
 
@@ -83,13 +85,31 @@ const api = {
 	},
 }
 
+// create a range availability block to browse through
 export function createRange(start, end) {
+	if (!(start instanceof Date && end instanceof Date)) {
+		throw new Error(
+			'[createRange] the passed dates should be an instance of Date',
+		)
+	}
+
 	const range = Object.create(api)
-	range.ranges = [
+	range.available = [
 		{
 			start: new Date(start),
 			end: new Date(end),
 		},
 	]
 	return range
+}
+
+// create multiple range blocks at once
+export function createMultipleRanges(datePairs = []) {
+	const ranges = []
+
+	datePairs.forEach(pair => {
+		ranges.push(createRange(pair.start, pair.end))
+	})
+
+	return ranges
 }
