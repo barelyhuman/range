@@ -234,7 +234,7 @@ test('should not block when start is greater than both', () => {
 
 	const blocked = range.block(blockStart, blockEnd)
 
-	assert.not.ok(blocked.changes)
+	assert.not.ok(blocked.changed)
 	assert.equal(blocked.effectedRanges.length, 0)
 })
 
@@ -261,8 +261,22 @@ test('should not block when start is less but end is greater than the range', ()
 
 	const blocked = range.block(blockStart, blockEnd)
 
-	assert.not.ok(blocked.changes)
+	assert.not.ok(blocked.changed)
 	assert.equal(blocked.effectedRanges.length, 0)
+})
+
+test('should block on custom data', () => {
+	const toBlockStart = new Date('2022-05-23T12:10:18.440Z')
+	const toBlockEnd = new Date('2022-05-23T16:10:18.440Z')
+
+	const range = createRange(
+		new Date('2022-05-22T18:30:00.000Z'),
+		new Date('2022-05-23T18:29:59.999Z'),
+	)
+
+	const blocked = range.block(toBlockStart, toBlockEnd)
+
+	assert.ok(blocked.changed)
 })
 
 test.run()
