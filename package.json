@@ -47,7 +47,14 @@
 	},
 	"terser": {
 		"compress": {
-			"passes": 10
+			"passes": 3,
+			"pure_getters": true
+		},
+		"mangle": {
+			"reserved": [
+				"__shared__"
+			],
+			"toplevel": true
 		}
 	},
 	"umd:name": "range"
