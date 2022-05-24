@@ -29,8 +29,8 @@ test('should create an array of ranges', () => {
 		},
 	])
 
-	assert.ok(ranges.length > 0)
-	ranges.forEach(rangeItem => {
+	assert.ok(ranges.available.length > 0)
+	ranges.available.forEach(rangeItem => {
 		assert.equal(rangeItem.available[0].start, today)
 		assert.equal(rangeItem.available[0].end, tomorrow)
 	})
@@ -277,6 +277,28 @@ test('should block on custom data', () => {
 	const blocked = range.block(toBlockStart, toBlockEnd)
 
 	assert.ok(blocked.changed)
+})
+
+test("should allow blocking the same time again since there's multiple ranges", () => {
+	const toBlockStart = new Date('2022-05-23T12:10:18.440Z')
+	const toBlockEnd = new Date('2022-05-23T16:10:18.440Z')
+
+	const range = createMultipleRanges([
+		{
+			start: new Date('2022-05-22T18:30:00.000Z'),
+			end: new Date('2022-05-23T18:29:59.999Z'),
+		},
+		{
+			start: new Date('2022-05-22T18:30:00.000Z'),
+			end: new Date('2022-05-23T18:29:59.999Z'),
+		},
+	])
+
+	const blocked = range.block(toBlockStart, toBlockEnd)
+	const blocked2 = range.block(toBlockStart, toBlockEnd)
+
+	assert.ok(blocked.changed)
+	assert.ok(blocked2.changed)
 })
 
 test.run()

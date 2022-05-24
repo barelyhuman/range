@@ -111,5 +111,15 @@ export function createMultipleRanges(datePairs = []) {
 		ranges.push(createRange(pair.start, pair.end))
 	})
 
-	return ranges
+	return {
+		available: ranges,
+		block(start, end) {
+			for (let i = 0; i < this.available.length; i++) {
+				let rangeItem = this.available[i]
+				const blocked = rangeItem.block(start, end)
+				if (!blocked.changed) continue
+				return blocked
+			}
+		},
+	}
 }
