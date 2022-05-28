@@ -29,10 +29,12 @@ npm i @barelyhuman/range
 
 ```js
 // esm
-import {createRange} from '@barelyhuman/range'
+import { createRange } from '@barelyhuman/range'
+```
 
+```js
 // cjs
-const {createRange} = require('@barelyhuman/range')
+const { createRange } = require('@barelyhuman/range')
 ```
 
 ## Example
@@ -42,7 +44,7 @@ You can find more such examples in the [`tests`](/tests/) files.
 The below goes through most of the API
 
 ```js
-import {createRange} from '@barelyhuman/range'
+import { createRange } from '@barelyhuman/range'
 
 // decide the start and end of the range
 const start = new Date()
@@ -65,14 +67,14 @@ const blockEnd = new Date(start)
 blockStart.setHours(10, 0, 0, 0)
 blockEnd.setHours(18, 0, 0, 0)
 
-range.beforeChange(({available}) => {
-	// triggered before a change is done to the ranges
-	// `available` is the ranges before the change is done
+range.beforeChange(({ available }) => {
+  // triggered before a change is done to the ranges
+  // `available` is the ranges before the change is done
 })
 
-range.afterChange(({available, effectedRanges, changed}) => {
-	// only triggered  **if** a range is changed
-	// `changed` is always true here
+range.afterChange(({ available, effectedRanges, changed }) => {
+  // only triggered  **if** a range is changed
+  // `changed` is always true here
 })
 
 // attempt a block on the range

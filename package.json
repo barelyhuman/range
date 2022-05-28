@@ -1,61 +1,71 @@
 {
-	"name": "@barelyhuman/range",
-	"version": "0.1.1-beta.3",
-	"keywords": [
-		"range",
-		"in range",
-		"range maps",
-		"range blockers"
-	],
-	"license": "MIT",
-	"author": "Reaper <ahoy@barelyhuman.dev>",
-	"exports": {
-		".": {
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.js"
-		},
-		"./package.json": "./package.json"
-	},
-	"main": "dist/index.js",
-	"unpkg": "dist/index.min.js",
-	"module": "dist/index.mjs",
-	"types": "index.d.ts",
-	"files": [
-		"*.d.ts",
-		"dist"
-	],
-	"scripts": {
-		"build": "bundt",
-		"next": "bumpp --commit --tag",
-		"test": "uvu -r esm tests",
-		"fix": "prettier --write"
-	},
-	"prettier": "@barelyhuman/prettier-config",
-	"devDependencies": {
-		"@barelyhuman/prettier-config": "^0.1.0",
-		"bumpp": "^7.1.1",
-		"bundt": "^1.1.5",
-		"esm": "^3.2.25",
-		"prettier": "^2.6.2",
-		"uvu": "^0.5.3"
-	},
-	"engines": {
-		"node": ">=8"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"terser": {
-		"compress": {
-			"passes": 3,
-			"pure_getters": true
-		},
-		"mangle": {
-			"reserved": [
-				"__shared__"
-			],
-			"toplevel": true
-		}
-	},
-	"umd:name": "range"
+  "name": "@barelyhuman/range",
+  "version": "0.1.1-beta.3",
+  "author": "Reaper <ahoy@barelyhuman.dev>",
+  "license": "MIT",
+  "keywords": [
+    "range",
+    "in range",
+    "range maps",
+    "range blockers"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "unpkg": "dist/index.min.js",
+  "types": "index.d.ts",
+  "files": [
+    "*.d.ts",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "build": "bundt",
+    "next": "bumpp --commit --tag",
+    "test": "uvu -r esm tests",
+    "lint": "eslint .",
+    "fix": "eslint . --fix "
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.24.2",
+    "@arkweid/lefthook": "^0.7.7",
+    "bumpp": "^7.1.1",
+    "bundt": "^1.1.5",
+    "eslint": "^8.16.0",
+    "esm": "^3.2.25",
+    "prettier": "^2.6.2",
+    "uvu": "^0.5.3"
+  },
+  "eslintConfig": {
+    "ignorePatterns": [
+      "*.d.ts"
+    ],
+    "extends": [
+      "@antfu/basic"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "terser": {
+    "compress": {
+      "passes": 3,
+      "pure_getters": true
+    },
+    "mangle": {
+      "reserved": [
+        "__shared__"
+      ],
+      "toplevel": true
+    }
+  },
+  "umd:name": "range"
 }
