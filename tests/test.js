@@ -299,4 +299,19 @@ test('should allow blocking the same time again since there\'s multiple ranges',
   assert.ok(blocked2.changed)
 })
 
+test('should allow blocking at the start of time matches', () => {
+  const toBlockStart = new Date('2022-05-31T03:30:00.000Z')
+  const toBlockEnd = new Date('2022-05-31T04:30:00.000Z')
+
+  const range = createMultipleRanges([
+    {
+      start: new Date('2022-05-31T03:30:00.000Z'),
+      end: new Date('2022-05-31T12:30:00.000Z'),
+    },
+  ])
+
+  const blocked = range.block(toBlockStart, toBlockEnd)
+  assert.ok(blocked.changed)
+})
+
 test.run()

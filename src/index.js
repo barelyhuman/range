@@ -1,9 +1,9 @@
 function inRange(range, start, end) {
-  const startInRange = start.valueOf() > range.start.valueOf()
+  const startInRange = start.valueOf() >= range.start.valueOf()
     && start.valueOf() < range.end.valueOf()
 
   const endInRange = end.valueOf() > range.start.valueOf()
-    && end.valueOf() < range.end.valueOf()
+    && end.valueOf() <= range.end.valueOf()
 
   return startInRange && endInRange
 }
@@ -118,6 +118,17 @@ export function createMultipleRanges(datePairs = []) {
           continue
         return blocked
       }
+    },
+    nearestAvailability(fromTime) {
+      let nextAvailableTime
+
+      ranges.forEach((x) => {
+        nextAvailableTime = x.available.find(
+          y => y.start.valueOf() > new Date(fromTime).valueOf(),
+        )
+      })
+
+      return nextAvailableTime
     },
   }
 }
