@@ -3,6 +3,15 @@ export interface DatePair {
 	end: Date
 }
 
+export interface MultipleRange{
+	available: Range[]
+	block: (
+		start: Date,
+		end: Date,
+	) => {effectedRanges: DatePair[]; changed: false}
+	nearestAvailability(from:Date): Date | undefined
+}
+
 export interface Range {
 	available: DatePair[]
 	beforeChange: (fn: (params: any) => void) => void
@@ -11,8 +20,8 @@ export interface Range {
 		start: Date,
 		end: Date,
 	) => {effectedRanges: DatePair[]; changed: false}
-}
+} 
 
 export function createRange(start: Date, end: Date): Range
 
-export function createMultipleRanges(datePairs: DatePair[]): Range[]
+export function createMultipleRanges(datePairs: DatePair[]): MultipleRange
