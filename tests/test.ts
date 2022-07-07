@@ -64,7 +64,7 @@ test('should split if start and end are in the range', () => {
   blockStart.setHours(10, 0, 0, 0)
   blockEnd.setHours(18, 0, 0, 0)
 
-  range.block(blockStart, blockEnd)
+  range.block(blockStart, blockEnd, '()')
 
   assert.equal(range.available[0].start.valueOf(), start.valueOf())
   assert.equal(range.available[0].end.valueOf(), blockStart.valueOf())
@@ -313,6 +313,40 @@ test('should allow blocking at the start of time matches', () => {
 
   const blocked = range.block(toBlockStart, toBlockEnd)
   assert.ok(blocked.changed)
+})
+
+test('should fail on overlaps on minutes', () => {
+  const toBlockStart = new Date('2022-05-31T13:00:00.000Z')
+  const toBlockEnd = new Date('2022-05-31T13:30:00.000Z')
+  const toBlockStart2 = new Date('2022-05-31T13:30:00.000Z')
+  const toBlockEnd2 = new Date('2022-05-31T14:30:00.000Z')
+
+  const range = createRange(
+    new Date('2022-05-31T12:30:00.000Z'),
+    new Date('2022-05-31T14:30:00.000Z'),
+  )
+
+  const blocked = range.block(toBlockStart, toBlockEnd, '[]')
+  const blocked2 = range.block(toBlockStart2, toBlockEnd2, '[]')
+  assert.ok(blocked.changed)
+  assert.not.ok(blocked2.changed)
+})
+
+test('should fail on overlaps on minutes', () => {
+  const toBlockStart = new Date('2022-05-31T13:00:00.000Z')
+  const toBlockEnd = new Date('2022-05-31T13:30:00.000Z')
+  const toBlockStart2 = new Date('2022-05-31T13:30:00.000Z')
+  const toBlockEnd2 = new Date('2022-05-31T14:30:00.000Z')
+
+  const range = createRange(
+    new Date('2022-05-31T12:30:00.000Z'),
+    new Date('2022-05-31T14:30:00.000Z'),
+  )
+
+  const blocked = range.block(toBlockStart, toBlockEnd, '[]')
+  const blocked2 = range.block(toBlockStart2, toBlockEnd2, '[]')
+  assert.ok(blocked.changed)
+  assert.not.ok(blocked2.changed)
 })
 
 test.run()

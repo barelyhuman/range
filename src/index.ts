@@ -127,13 +127,22 @@ export function createRange(start: Date, end: Date) {
         result.effectedRanges.push(range)
         result.changed = true
 
+        const _startClone = new Date(start)
+        const _endClone = new Date(end)
+
+        if (includeStart)
+          _startClone.setMinutes(_startClone.getMinutes() - 1)
+
+        if (includeEnd)
+          _endClone.setMinutes(_endClone.getMinutes() + 1)
+
         newRanges.push({
           start: range.start,
-          end: start,
+          end: _startClone,
         })
 
         newRanges.push({
-          start: end,
+          start: _endClone,
           end: range.end,
         })
       })
