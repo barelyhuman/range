@@ -97,7 +97,7 @@ assert.equal(range.available[1].end.valueOf(), end.valueOf())
 ```
 
 ## Inclusions
-<sub><sup>since <code>v0.1.2</code></sup></sub>
+<sub><sup>since <code>v0.1.4</code></sup></sub>
 
 The library allows modifying the comaprison and blocking mechanism by passing in inclusion patterns. 
 `[]` include both `start` and `end` into the comparison and also in the blocking

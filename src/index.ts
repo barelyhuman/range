@@ -168,10 +168,8 @@ export function createRange(start: Date, end: Date) {
 
 // create multiple range blocks at once
 export function createMultipleRanges(datePairs: DatePair[] = []) {
-  const ranges = []
-
-  datePairs.forEach((pair) => {
-    ranges.push(createRange(pair.start, pair.end))
+  const ranges = datePairs.map((pair) => {
+    return createRange(pair.start, pair.end)
   })
 
   return {
