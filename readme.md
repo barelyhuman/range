@@ -96,6 +96,52 @@ assert.equal(range.available[1].start.valueOf(), blockEnd.valueOf())
 assert.equal(range.available[1].end.valueOf(), end.valueOf())
 ```
 
+## Inclusions
+<sub><sup>since <code>v0.1.2</code></sup></sub>
+
+The library allows modifying the comaprison and blocking mechanism by passing in inclusion patterns. 
+`[]` include both `start` and `end` into the comparison and also in the blocking
+ex:
+If you have a date range from 12:30AM - 2:30AM it can be represented as so 
+
+```md
+RANGE: 00:30:00 - 02:30:00
+```
+
+
+By default, the inclusivity is to include both start and end so if you create a block for let's say 1:00AM - 1:30AM 
+the ranges would split to 
+
+```md
+RANGE: 00:30:00-00:59:00
+RANGE: 01:31:00-02:30:00
+```
+Which, means I can no longer overlap on 1:00 or 1:30 , this is the default behaviour when working with booking type systems.
+
+If I wish to allow there to be overlaps on the blocking times then I can just send `()` exclusion flags to it and 
+the ranges would be like so.
+
+```md
+RANGE: 00:30:00-01:00:00
+RANGE: 01:30:00-02:30:00
+```
+
+a.k.a, I can overlap on the `1:00` and `1:30` minutes while using another blocker
+
+
+**Possible flags**
+- `[]` - include both
+- `(]` - exclude start, include end
+- `[)` - include start, exclude end
+- `()` - exclude both
+
+**Example**
+```js
+const range = createRange(rangeStart, rangeEnd)
+range.block(blockStart, blockEnd, '[]')
+```
+
+
 ## License
 
 [MIT](/license)
