@@ -1,6 +1,6 @@
 {
   "name": "@barelyhuman/range",
-  "version": "0.1.1-beta.5",
+  "version": "0.1.1",
   "packageManager": "pnpm@7.1.5",
   "author": "Reaper <ahoy@barelyhuman.dev>",
   "license": "MIT",
