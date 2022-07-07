@@ -39,6 +39,7 @@ test('should create an array of ranges', () => {
 test('should fail if something other than dates are passed', () => {
   try {
     // FIXME: assert.throws doesn't really work here
+    // @ts-expect-error the function expects dates
     createRange(1, 2)
     assert.unreachable('Should throw')
   }
