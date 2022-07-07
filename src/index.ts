@@ -114,6 +114,9 @@ export function createRange(start: Date, end: Date) {
       const { includeStart, includeEnd } = parseInclusivity(inclusivity)
 
       ctx.available.forEach((range, index) => {
+        const _startClone = new Date(start)
+        const _endClone = new Date(end)
+
         if (isEqual(range, start, end)) {
           result.effectedRanges.push(range)
           result.changed = true
@@ -127,24 +130,25 @@ export function createRange(start: Date, end: Date) {
         result.effectedRanges.push(range)
         result.changed = true
 
-        const _startClone = new Date(start)
-        const _endClone = new Date(end)
+        if (_startClone.getTime() > range.start.getTime()) {
+          if (includeStart)
+            _startClone.setMinutes(_startClone.getMinutes() - 1)
 
-        if (includeStart)
-          _startClone.setMinutes(_startClone.getMinutes() - 1)
+          newRanges.push({
+            start: range.start,
+            end: _startClone,
+          })
+        }
 
-        if (includeEnd)
-          _endClone.setMinutes(_endClone.getMinutes() + 1)
+        if (_endClone.getTime() < range.end.getTime()) {
+          if (includeEnd)
+            _endClone.setMinutes(_endClone.getMinutes() + 1)
 
-        newRanges.push({
-          start: range.start,
-          end: _startClone,
-        })
-
-        newRanges.push({
-          start: _endClone,
-          end: range.end,
-        })
+          newRanges.push({
+            start: _endClone,
+            end: range.end,
+          })
+        }
       })
 
       if (result.changed) {

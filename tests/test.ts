@@ -349,4 +349,32 @@ test('should fail on overlaps on minutes', () => {
   assert.not.ok(blocked2.changed)
 })
 
+test('should remove invalid range from start', () => {
+  const toBlockStart = new Date('2022-05-31T13:00:00.000Z')
+  const toBlockEnd = new Date('2022-05-31T13:30:00.000Z')
+
+  const range = createRange(
+    new Date('2022-05-31T13:00:00.000Z'),
+    new Date('2022-05-31T14:30:00.000Z'),
+  )
+
+  const blocked = range.block(toBlockStart, toBlockEnd, '[]')
+  assert.equal(range.available.length, 1)
+  assert.ok(blocked.changed)
+})
+
+test('should remove invalid ranges from end', () => {
+  const toBlockStart = new Date('2022-05-31T13:00:00.000Z')
+  const toBlockEnd = new Date('2022-05-31T13:30:00.000Z')
+
+  const range = createRange(
+    new Date('2022-05-31T12:00:00.000Z'),
+    new Date('2022-05-31T13:30:00.000Z'),
+  )
+
+  const blocked = range.block(toBlockStart, toBlockEnd, '[]')
+  assert.equal(range.available.length, 1)
+  assert.ok(blocked.changed)
+})
+
 test.run()
